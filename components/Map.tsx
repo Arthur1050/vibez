@@ -95,7 +95,7 @@ export default function Map() {
 
 const styles = StyleSheet.create({
   map: {
-    flex: 1,
+    flex: 1
   },
   text: {
     position: 'absolute',
