@@ -1,7 +1,7 @@
-import { useThemeColor } from '@/hooks/useThemeColor';
-import { Tabs, usePathname } from 'expo-router';
-import { useEffect, useRef } from 'react';
-import { Animated, Easing, Platform } from 'react-native';
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { Tabs, usePathname } from "expo-router";
+import { useEffect, useRef } from "react";
+import { Animated, Easing, Platform } from "react-native";
 
 interface TabsContentProps extends React.ComponentProps<typeof Tabs> {
   children: React.ReactNode;
@@ -33,7 +33,7 @@ export default function TabsContent({ children, ...props }: TabsContentProps) {
         useNativeDriver: true, // transform é suportado
       }),
       Animated.timing(translateYAnim, {
-        toValue: isHomeScreen ? -30 : 0, // Move para cima para simular bottom
+        toValue: isHomeScreen ? -30 : -10, // Move para cima para simular bottom
         duration,
         easing,
         useNativeDriver: true, // transform é suportado
@@ -48,45 +48,55 @@ export default function TabsContent({ children, ...props }: TabsContentProps) {
   }, [isHomeScreen]);
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: Platform.select({
-          ios: {
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            backgroundColor: useThemeColor("--color-background"),
-            borderRadius: borderRadiusAnim,
-            height: 65,
-            paddingTop: 10,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 4 },
-            shadowOpacity: 0.1,
-            shadowRadius: 8,
-            elevation: 8,
-            transform: [{ scaleX: scaleAnim }, { translateY: translateYAnim }],
-          },
-          android: {
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            backgroundColor: useThemeColor("--color-background", 0.95),
-            borderRadius: borderRadiusAnim,
-            height: 60,
-            elevation: 8,
-            transform: [{ scaleX: scaleAnim }, { translateY: translateYAnim }],
-          },
-          default: {},
-        }),
-        tabBarActiveTintColor: useThemeColor("--color-primary", 1),
-        tabBarInactiveTintColor: useThemeColor("--color-text", 0.5),
-      }}
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarStyle: Platform.select({
+            ios: {
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              backgroundColor: useThemeColor("--color-background"),
+              borderTopLeftRadius: 0,
+              borderTopRightRadius: 0,
+              borderBottomLeftRadius: borderRadiusAnim,
+              borderBottomRightRadius: borderRadiusAnim,
+              height: 70,
+              paddingTop: 10,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.1,
+              shadowRadius: 8,
+              elevation: 8,
+              transform: [
+                { scaleX: scaleAnim },
+                { translateY: translateYAnim },
+              ],
+              borderColor: "transparent",
+            },
+            android: {
+              position: "absolute",
+              bottom: 0,
+              left: 0,
+              right: 0,
+              backgroundColor: useThemeColor("--color-background", 0.95),
+              borderRadius: borderRadiusAnim,
+              height: 60,
+              elevation: 8,
+              transform: [
+                { scaleX: scaleAnim },
+                { translateY: translateYAnim },
+              ],
+            },
+            default: {},
+          }),
+          tabBarActiveTintColor: useThemeColor("--color-primary", 1),
+          tabBarInactiveTintColor: useThemeColor("--color-text", 0.5),
+        }}
         {...props}
-    >
+      >
         {children}
-    </Tabs>
+      </Tabs>
   );
 }

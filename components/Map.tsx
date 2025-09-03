@@ -1,4 +1,5 @@
 import { DarkMapStyle } from "@/constants/DarkMapStyle";
+import { useGlobalStore } from "@/store";
 import * as Location from "expo-location";
 import { useEffect, useRef, useState } from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
@@ -8,6 +9,7 @@ export default function Map() {
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const mapRef = useRef<MapView | null>(null);
+  const { setIsUpcomingEventsOpened } = useGlobalStore();
 
   useEffect(() => {
     (async () => {
@@ -78,6 +80,9 @@ export default function Map() {
         followsUserLocation={true}
         userLocationAnnotationTitle="Você está aqui"
         customMapStyle={DarkMapStyle}
+        onPanDrag={() => {
+          setIsUpcomingEventsOpened(false);
+        }}
       />
 
       <Text style={styles.text}>{text}</Text>
@@ -110,7 +115,7 @@ const styles = StyleSheet.create({
   },
   centerButton: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 125,
     right: 20,
     backgroundColor: 'rgba(255,255,255,0.9)',
     width: 50,

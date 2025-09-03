@@ -9,11 +9,13 @@ interface ThemeProviderProps {
 
 type ThemeContextType = {
     theme: "light" | "dark";
+    schema: typeof themes.dark;
     toggleTheme: () => void;
 };
 
 export const ThemeContext = createContext<ThemeContextType>({
     theme: "light",
+    schema: themes.dark,
     toggleTheme: () => { },
 });
 
@@ -44,7 +46,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     });
 
     return (
-        <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme }}>
+        <ThemeContext.Provider value={{ theme: currentTheme, toggleTheme, schema: themes[currentTheme] }}>
             <StatusBar style={currentTheme === "dark" ? "light" : "dark"} />
             {/* <View style={themes[currentTheme]} className="flex-1"> */}
                     {styledChildren}
