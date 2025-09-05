@@ -1,4 +1,6 @@
+import FilterScrollBar from '@/components/FilterScrollBar';
 import Map from '@/components/Map';
+import NearbyEventsSection from '@/components/NearbyEventsSection';
 import { useThemeColor } from '@/hooks/useThemeColor';
 import { useTheme } from '@/providers/ThemeProvider';
 import { useGlobalStore } from '@/store';
@@ -17,6 +19,46 @@ import Animated, {
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
 const MIN_HEIGHT = 25; // Altura mínima do menu
 const MAX_HEIGHT = SCREEN_HEIGHT * 0.5; // 50% da tela
+
+// Mock data
+const mockFilters = [
+  { id: 'bares', title: 'Bares' },
+  { id: 'shows', title: 'Shows' },
+  { id: 'bailes', title: 'Bailes' },
+  { id: 'ao-vivo', title: 'Ao vivo' },
+  { id: 'festa', title: 'Festa' },
+  { id: 'cultura', title: 'Cultura' },
+];
+
+const mockEvents = [
+  {
+    id: '1',
+    title: 'PAGODE DO LOVE',
+    subtitle: 'Casa di Giulietta',
+    distance: 'A 2 quilômetros de distância',
+    address: 'Travessa Coronel José Ferreira, 126 - São Sebastião',
+    imageSource: require('@/assets/images/event-placeholder.png'), // Você precisa adicionar esta imagem
+    isHappening: true,
+  },
+  {
+    id: '2',
+    title: 'PAGODE DO LOVE',
+    subtitle: 'Casa di Giulietta',
+    distance: 'A 2 quilômetros de distância',
+    address: 'Travessa Coronel José Ferreira, 126 - São Sebastião',
+    imageSource: require('@/assets/images/event-placeholder.png'),
+    isHappening: true,
+  },
+  {
+    id: '3',
+    title: 'PAGODE DO LOVE',
+    subtitle: 'Casa di Giulietta',
+    distance: 'A 2 quilômetros de distância',
+    address: 'Travessa Coronel José Ferreira, 126 - São Sebastião',
+    imageSource: require('@/assets/images/event-placeholder.png'),
+    isHappening: true,
+  },
+];
 
 export default function Index() {
   const { schema } = useTheme();
@@ -85,6 +127,16 @@ export default function Index() {
     );
   }, [isUpcomingEventsOpened, menuHeight]);
 
+  const handleFilterPress = (filterId: string) => {
+    console.log('Filter pressed:', filterId);
+    // Implementar lógica de filtro aqui
+  };
+
+  const handleEventPress = (eventId: string) => {
+    console.log('Event pressed:', eventId);
+    // Implementar navegação para detalhes do evento
+  };
+
   return (
     <GestureHandlerRootView style={[schema, {flex: 1}]}>
       <View style={{flex: 1}}>
@@ -131,8 +183,16 @@ export default function Index() {
           </GestureDetector>
 
           {/* Conteúdo do menu */}
-          <View style={{ flex: 1, padding: 16 }}>
-            {/* Seu conteúdo do menu aqui */}
+          <View style={{ flex: 1, paddingTop: 8 }}>
+            <FilterScrollBar 
+              filters={mockFilters}
+              onFilterPress={handleFilterPress}
+            />
+            
+            <NearbyEventsSection 
+              events={mockEvents}
+              onEventPress={handleEventPress}
+            />
           </View>
         </Animated.View>
       </View>
