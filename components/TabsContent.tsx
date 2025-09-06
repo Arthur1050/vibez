@@ -1,7 +1,7 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
 import { Tabs, usePathname } from "expo-router";
 import { useEffect, useRef } from "react";
-import { Animated, Easing, Platform } from "react-native";
+import { Animated, Easing } from "react-native";
 
 interface TabsContentProps extends React.ComponentProps<typeof Tabs> {
   children: React.ReactNode;
@@ -10,6 +10,7 @@ interface TabsContentProps extends React.ComponentProps<typeof Tabs> {
 export default function TabsContent({ children, ...props }: TabsContentProps) {
   const pathname = usePathname();
   const isHomeScreen = pathname === "/" || pathname === "/index";
+  const backgroundColor = useThemeColor('--color-background');
 
   // Valores animados usando transform (suportado pelo native driver)
   const scaleAnim = useRef(new Animated.Value(isHomeScreen ? 0.9 : 1)).current;
@@ -51,48 +52,30 @@ export default function TabsContent({ children, ...props }: TabsContentProps) {
       <Tabs
         screenOptions={{
           headerShown: false,
-          tabBarStyle: Platform.select({
-            ios: {
+          tabBarStyle: {
               position: "absolute",
               bottom: 0,
               left: 0,
               right: 0,
-              backgroundColor: useThemeColor("--color-background"),
+              backgroundColor,
               borderTopLeftRadius: 0,
               borderTopRightRadius: 0,
               borderBottomLeftRadius: borderRadiusAnim,
               borderBottomRightRadius: borderRadiusAnim,
               height: 70,
               paddingTop: 10,
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.1,
-              shadowRadius: 8,
-              elevation: 8,
               transform: [
                 { scaleX: scaleAnim },
                 { translateY: translateYAnim },
               ],
               borderColor: "transparent",
             },
-            android: {
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              backgroundColor: useThemeColor("--color-background", 0.95),
-              borderRadius: borderRadiusAnim,
-              height: 60,
-              elevation: 8,
-              transform: [
-                { scaleX: scaleAnim },
-                { translateY: translateYAnim },
-              ],
-            },
-            default: {},
-          }),
           tabBarActiveTintColor: useThemeColor("--color-primary", 1),
           tabBarInactiveTintColor: useThemeColor("--color-text", 0.5),
+          tabBarBackground: () => null, // Fundo transparente, já que o estilo do tabBar já define a cor,
+          sceneStyle: { backgroundColor }, // Define a cor de fundo da cena
+          headerStyle: { backgroundColor },
+          animation: 'shift',
         }}
         {...props}
       >
