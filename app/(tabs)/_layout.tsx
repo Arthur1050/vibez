@@ -1,10 +1,15 @@
 import TabsContent from "@/components/TabsContent";
+import { useThemeColor } from "@/hooks/useThemeColor";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
+import { View } from "react-native";
 
 export default function TabLayout() {
+  const backgroundColor = useThemeColor('--color-background');
+
   return (
     <>
+    <View style={{ flex: 1, backgroundColor }}>
       <TabsContent>
         <Tabs.Screen
           name="index"
@@ -34,6 +39,7 @@ export default function TabLayout() {
           }}
         />
       </TabsContent>
+    </View>
     </>
   );
 }
